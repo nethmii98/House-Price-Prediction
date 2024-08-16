@@ -19,7 +19,7 @@ def get_requirements(file_path:str)->List[str]:
     return requirements
 
 setup(
-    name='Student-Performance-Prediction',
+    name='House-Price-Prediction',
     version='2.43.0',
     author='Nethmi',
     author_email='nethminagodawithane777@gmail.com',

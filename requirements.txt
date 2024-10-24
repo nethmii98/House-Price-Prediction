@@ -7,4 +7,5 @@ scikit-learn==1.2
 catboost
 xgboost
 tensorflow
+dill
 -e .

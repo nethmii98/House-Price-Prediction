@@ -13,6 +13,8 @@ from src.components.data_transformation import DataTransformationConfig
 from src.components.model_trainer import ModelTrainer
 from src.components.model_trainer import ModelTrainerConfig
 
+
+
 @dataclass
 class DataIngestionConfig:
     train_data_path: str=os.path.join('artifacts','train.csv')
@@ -26,15 +28,20 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method or component")
         try:
-            df=pd.read_csv('notebook\data\kc_house_data.csv')
+            df=pd.read_csv('notebook/data/kc_house_data.csv')
             logging.info('Read the dataset as dataframe')
+
+            df.drop(columns=['id','date','waterfront','view','sqft_above','yr_renovated','zipcode','sqft_living15','sqft_lot15'],inplace=True)
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
-
+            logging.info(f"Shape of df : {df.shape}")
             logging.info("Train test split initiated")
             train_set,test_set=train_test_split(df,test_size=0.2,random_state=42)
+            logging.info(f"Shape of train_set : {train_set.shape}")
+            logging.info(f"Shape of test_set : {test_set.shape}")
+            logging.info(f"Saving train data to path: {self.ingestion_config.train_data_path}")
 
             train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
             test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)

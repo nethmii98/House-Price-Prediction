@@ -7,6 +7,8 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
+from sklearn.preprocessing import Normalizer, MinMaxScaler
+
 
 from src.exception import CustomException
 from src.logger import logging
@@ -68,10 +70,13 @@ class DataTransformation:
             train_df = pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
 
+            #train_df.drop(columns=['id','date','waterfront','view','sqft_above','yr_renovated','zipcode','sqft_living15','sqft_lot15'],inplace=True)
+            #test_df.drop(columns=['id','date','waterfront','view','sqft_above','yr_renovated','zipcode','sqft_living15','sqft_lot15'],inplace=True)
+
             logging.info("Read train and test data completed")
             logging.info("Obtaining preprocessing object")
 
-            preprocessing_obj = self.get_data_transformer_object()
+            # preprocessing_obj = self.get_data_transformer_object()
             target_column_name = 'price'
             numerical_columns = ['sqft_living','sqft_lot','sqft_basement','yr_built','lat','long']
 
@@ -85,8 +90,15 @@ class DataTransformation:
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
 
-            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
-            input_feature_test_arr=preprocessing_obj.fit_transform(input_feature_test_df)
+            # input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df).toarray()
+            # input_feature_test_arr = preprocessing_obj.fit_transform(input_feature_test_df).toarray()
+            scaler = MinMaxScaler()
+
+            input_feature_train_arr = scaler.fit_transform(input_feature_train_df)
+            input_feature_test_arr = scaler.fit_transform(input_feature_test_df)
+
+            logging.info(f"Shapes after transformation: X_train={input_feature_train_arr.shape}, X_test={input_feature_test_arr.shape}")
+
 
             print(type(input_feature_train_arr))
             print(type(target_feature_train_df))    
@@ -117,10 +129,10 @@ class DataTransformation:
             logging.info(f"Shape of train_arr: {train_arr.shape}")
             logging.info(f"Shape of test_arr: {test_arr.shape}")
 
-            save_object(
-                file_path=self.data_transformation_config.preprocessor_obj_file_path,
-                obj = preprocessing_obj
-            )
+            # save_object(
+            #     file_path=self.data_transformation_config.preprocessor_obj_file_path,
+            #     obj = preprocessing_obj
+            # )
 
             return(
                 train_arr,

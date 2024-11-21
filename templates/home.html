@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .login {
+            background-color: #fff;
+            padding: 40px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        legend {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
+        .placeholder {
+            color: #999;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login">
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h1>
+                <legend>House Price Prediction Interface</legend>
+            </h1>
+
+            <div class="mb-3">
+                <label class="form-label">Number of Bedrooms</label>
+                <input class="form-control" type="number" name="bedrooms" placeholder="Enter number of bedrooms" min="1" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Number of Bathrooms</label>
+                <input class="form-control" type="number" name="bathrooms" placeholder="Enter number of bathrooms" step="0.5" min="0" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Living Area (sqft)</label>
+                <input class="form-control" type="number" name="sqft_living" placeholder="Enter living area in sqft" min="0" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Lot Area (sqft)</label>
+                <input class="form-control" type="number" name="sqft_lot" placeholder="Enter lot area in sqft" min="0" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Number of Floors</label>
+                <input class="form-control" type="number" name="floors" placeholder="Enter number of floors" step="0.5" min="1" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Condition</label>
+                <select class="form-control" name="condition" required>
+                    <option class="placeholder" selected disabled value="">Select Condition</option>
+                    <option value="1">Poor</option>
+                    <option value="2">Fair</option>
+                    <option value="3">Average</option>
+                    <option value="4">Good</option>
+                    <option value="5">Excellent</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Grade</label>
+                <select class="form-control" name="grade" required>
+                    <option class="placeholder" selected disabled value="">Select Grade</option>
+                    <option value="1">Low</option>
+                    <option value="2">Below Average</option>
+                    <option value="3">Average</option>
+                    <option value="4">Above Average</option>
+                    <option value="5">High</option>
+                    <option value="6">Very High</option>
+                    <option value="7">Excellent</option>
+                    <option value="8">Superior</option>
+                    <option value="9">Exceptional</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Basement Area (sqft)</label>
+                <input class="form-control" type="number" name="sqft_basement" placeholder="Enter basement area in sqft" min="0" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Year Built</label>
+                <input class="form-control" type="number" name="yr_built" placeholder="Enter year built" min="1800" max="2024" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Latitude</label>
+                <input class="form-control" type="number" name="lat" placeholder="Enter latitude" step="0.000001" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Longitude</label>
+                <input class="form-control" type="number" name="long" placeholder="Enter longitude" step="0.000001" required />
+            </div>
+
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Predict House Price" required />
+            </div>
+        </form>
+        <h2>
+            The predicted house price is: {{ results }}
+        </h2>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

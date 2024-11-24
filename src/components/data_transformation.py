@@ -1,37 +1,21 @@
 import sys
 from dataclasses import dataclass
-
 import numpy as np
 import pandas as pd
-from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder,StandardScaler
-from sklearn.preprocessing import Normalizer, MinMaxScaler
-from sklearn.preprocessing import PowerTransformer
+from sklearn.preprocessing import StandardScaler
 from scipy.sparse import csr_matrix,hstack
 
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import save_object
-import os
 
 @dataclass
-class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts','preprocessor.pkl')
-
 
 class DataTransformation:
-    def __init__(self):
-        self.data_transformation_config=DataTransformationConfig()
+    
         
     def initiate_data_transformation(self,train_path,test_path):
         try:
-
-            numerical_columns = ['sqft_living','sqft_lot','sqft_basement','yr_built','lat','long']
-            categorical_columns = ['bedrooms','bathrooms','floors','condition','grade'] 
-           
 
             train_df = pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
@@ -82,7 +66,6 @@ class DataTransformation:
             # Concatenate the sparse matrix and the target variable
             test_arr = hstack([input_feature_test_arr, target_test_sparse])
             
-            logging.info(f"Saved preprocessing object.")
 
             logging.info(f"Shape of train_arr: {train_arr.shape}")
             logging.info(f"Shape of test_arr: {test_arr.shape}")

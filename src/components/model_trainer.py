@@ -10,7 +10,6 @@ from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from catboost import CatBoostRegressor
 from xgboost import XGBRegressor
 from sklearn.metrics import r2_score
-from sklearn.model_selection import RandomizedSearchCV
 from catboost import CatBoostRegressor
 from xgboost import XGBRegressor
 from tensorflow.keras.regularizers import l2
